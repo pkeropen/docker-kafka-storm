@@ -1,12 +1,12 @@
 package com.biggis.storm.bolt;
 
-import backtype.storm.task.OutputCollector;
-import backtype.storm.task.TopologyContext;
-import backtype.storm.topology.OutputFieldsDeclarer;
-import backtype.storm.topology.base.BaseRichBolt;
-import backtype.storm.tuple.Fields;
-import backtype.storm.tuple.Tuple;
-import backtype.storm.tuple.Values;
+import org.apache.storm.task.OutputCollector;
+import org.apache.storm.task.TopologyContext;
+import org.apache.storm.topology.OutputFieldsDeclarer;
+import org.apache.storm.topology.base.BaseRichBolt;
+import org.apache.storm.tuple.Fields;
+import org.apache.storm.tuple.Tuple;
+import org.apache.storm.tuple.Values;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,7 +19,7 @@ import java.util.Map;
 public class CounterBolt extends BaseRichBolt {
 
     private static final Logger LOG = LoggerFactory.getLogger(CounterBolt.class);
-    private OutputCollector collector ;
+    private OutputCollector collector;
     private Map<String, Integer> counts;
 
     public void prepare(Map map, TopologyContext topologyContext, OutputCollector outputCollector) {
@@ -33,14 +33,14 @@ public class CounterBolt extends BaseRichBolt {
         String word = tuple.getStringByField("word");
 
         Integer count = counts.get(word);
-        if (count == null){
+        if (count == null) {
             count = 0;
         }
         count++;
 
         counts.put(word, count);
-        collector .emit(tuple, new Values(word, count));
-        collector .ack(tuple);
+        collector.emit(tuple, new Values(word, count));
+        collector.ack(tuple);
     }
 
     public void declareOutputFields(OutputFieldsDeclarer outputFieldsDeclarer) {

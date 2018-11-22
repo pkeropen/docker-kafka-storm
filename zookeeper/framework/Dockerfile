@@ -1,8 +1,8 @@
 FROM ubuntu:14.04
 
-MAINTAINER wipatrick
+MAINTAINER pkeropen3
 
-ENV ZK_VERSION='3.4.6'
+ENV ZK_VERSION='3.4.10'
 
 RUN apt-get update \
     && apt-get install -y openjdk-7-jre-headless wget

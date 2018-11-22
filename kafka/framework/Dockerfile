@@ -2,4 +2,4 @@
 # https://github.com/ches/docker-kafka
 FROM ches/kafka
 
-MAINTAINER wipatrick
+MAINTAINER pkeropen3

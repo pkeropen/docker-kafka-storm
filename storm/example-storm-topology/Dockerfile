@@ -1,13 +1,13 @@
 FROM maven:3.2.5-jdk-8u40
 
-MAINTAINER wipatrick
+MAINTAINER pkeropen3
 
 RUN apt-get update && \
     apt-get install -y unzip wget
 
-RUN wget -q -O - http://mirrors.sonic.net/apache/storm/apache-storm-0.9.4/apache-storm-0.9.4.tar.gz | tar -xzf - -C /opt
+RUN wget -q -O - http://mirrors.sonic.net/apache/storm/apache-storm-1.0.6/apache-storm-1.0.6.tar.gz | tar -xzf - -C /opt
 
-ENV STORM_HOME /opt/apache-storm-0.9.4
+ENV STORM_HOME /opt/apache-storm-1.0.6
 
 RUN groupadd storm; useradd --gid storm --home-dir /home/storm --create-home --shell /bin/bash storm; chown -R storm:storm $STORM_HOME; mkdir /var/log/storm ; chown -R storm:storm /var/log/storm
 RUN ln -s $STORM_HOME/bin/storm /usr/bin/storm

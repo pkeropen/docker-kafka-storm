@@ -4,13 +4,14 @@ import com.biggis.kafka.helper.Utils;
 import kafka.javaapi.producer.Producer;
 import kafka.producer.KeyedMessage;
 import kafka.producer.ProducerConfig;
+
 import java.util.Properties;
 
 /**
  * KafkaProducer Example
- *
+ * <p>
  * Find explanations in the links below:
- *
+ * <p>
  * http://kafka.apache.org/documentation.html
  * https://cwiki.apache.org/confluence/display/KAFKA/0.8.0+Producer+Example
  */
@@ -27,7 +28,7 @@ public class KafkaProducer {
     static ProducerConfig conf;
     static Producer<String, String> producer;
 
-    static String [] sentences = {
+    static String[] sentences = {
             "the cow jumped over the moon",
             "an apple a day keeps the doctor away",
             "four score and seven years ago",
@@ -36,15 +37,15 @@ public class KafkaProducer {
             "a picture is worth a thousand words"
     };
 
-    public static void main(String [] args) {
+    public static void main(String[] args) {
 
         /**
-         * @BROKER_HOST:            IP of Docker Host (mainly VM) where dockerized Broker instance is running.
-         * @BROKER_PORT:            Mapped port of dockerized Broker instance on Host (VM).
-         * @TOPIC:                  Published topic to which a consumer (e.g. Apache Storm Kafka Spout) subscribes
+         * @BROKER_HOST: IP of Docker Host (mainly VM) where dockerized Broker instance is running.
+         * @BROKER_PORT: Mapped port of dockerized Broker instance on Host (VM).
+         * @TOPIC: Published topic to which a consumer (e.g. Apache Storm Kafka Spout) subscribes
          *                          in order to receive messages.
-         * @COUNTER_END:            Count of published messages.
-         * @SLEEP_TIME_IN_MILLIS:   Amount of time in between to messages.
+         * @COUNTER_END: Count of published messages.
+         * @SLEEP_TIME_IN_MILLIS: Amount of time in between to messages.
          */
         BROKER_HOST = args[0];
         BROKER_PORT = args[1];
@@ -66,10 +67,10 @@ public class KafkaProducer {
 
         Thread thread = new Thread() {
             public void run() {
-                while (runThread){
-                    if(COUNTER_START < COUNTER_END) {
+                while (runThread) {
+                    if (COUNTER_START < COUNTER_END) {
 
-                        String sentence = sentences[(int)(Math.random()*(sentences.length-1))];
+                        String sentence = sentences[(int) (Math.random() * (sentences.length - 1))];
 
                         /**
                          * Without PARTITION_KEY
@@ -86,11 +87,12 @@ public class KafkaProducer {
 
                         // start sending messages to Kafka Cluster
                         producer.send(message);
+
+                        System.out.println("topic = " + TOPIC + " value = " + sentence);
                         COUNTER_START++;
 
                         Utils.waitForMillis(SLEEP_TIME_IN_MILLIS);
-                    }
-                    else {
+                    } else {
                         runThread = false;
                     }
                 }

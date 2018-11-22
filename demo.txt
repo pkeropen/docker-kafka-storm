@@ -1,0 +1,5 @@
+docker run -it --rm --name create-kafka-topic ches/kafka  /bin/bash -c "/kafka/bin/kafka-topics.sh --create --zookeeper 192.168.99.100:2181 --replication-factor 1 --partition 1 --topic wordcount"
+
+docker run -it --rm -e MAINCLASS=com.biggis.storm.WordCountTopology  -e TOPOLOGY_NAME=wordcount-topology -e TOPIC=wordcount -e ZK_HOST=172.17.0.2  -e ZK_PORT=2181  -e NIMBUS_HOST=172.17.0.4 -e NIMBUS_THRIFT_PORT=6627  --name topology  storm-topology "submit"
+
+docker run -it --rm  -e BROKER_HOST=172.17.0.3  -e BROKER_PORT=9092  -e TOPIC=wordcount  -e COUNTER_END=5  -e SLEEP_TIME_IN_MILLIS=500  --name producer   kafka-producer

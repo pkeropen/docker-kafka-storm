@@ -1,3 +1,10 @@
+# 基于 Apache Kafka, Apache Storm,  使用流处理和分析数据
+
+#### 这里是参照  [wipatrick/docker-kafka-storm](https://github.com/wipatrick/docker-kafka-storm) 的github修改, 由于该项目太旧了,我加以改造了一下
+#### 下面的文档是原文,我认为该Up主写得不错,我就解析做法了,至于文档是英文,就各种翻译工具吧!
+
+------
+
 ## docker-kafka-storm
 Dockerized Big Data Stream Processing Pipeline for Analyzing Data with [Apache Kafka](http://kafka.apache.org/), [Apache Storm](http://storm.apache.org/). As a minimal working example, a simple wordcount was implemented. Thereby, a ```KafkaProducer``` randomly selects a sentence and publishes it to a single Kafka Broker. Within the ```WordCountTopology``` a ```KafkaSpout``` subscribes to the specific topic and reads off the commit log of the Kafka Broker and consumes the messages, i.e. the sentences. The storm topology then tokenizes the sentence in the ```SplitterBolt```, counts the words in the ```CounterBolt```, ranks them in the ```RankerBolt``` according to their counts and finally logs them.
 
@@ -17,7 +24,7 @@ For the ease of getting started on Windows & Mac OSx, these users should make us
 For this project the following versions of Apache Kafka, Apache Zookeeper and Apache Storm are used:
 * Apache Kafka 0.8.2.1
 * Apache Zookeeper 3.4.6
-* Apache Storm 0.9.4
+* Apache Storm 1.0.6
 
 ## Getting Started
 ***GENERAL NOTES***: 
@@ -154,7 +161,3 @@ f580b44212bc
 CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
 
 ```
-
-
-## Credits
-Credits belong to the work of [wurstmeister](https://github.com/wurstmeister) and [ches](https://github.com/ches) for putting [Apache Storm](https://github.com/wurstmeister/storm-docker) and [Apache Kafka](https://github.com/ches/kafka) in a Docker container. Check their repositories on GitHub.

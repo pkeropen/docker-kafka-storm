@@ -1,25 +1,27 @@
 package com.biggis.storm;
 
-import backtype.storm.LocalCluster;
-import backtype.storm.StormSubmitter;
-import backtype.storm.generated.StormTopology;
-import backtype.storm.spout.SchemeAsMultiScheme;
-import backtype.storm.topology.TopologyBuilder;
-import backtype.storm.Config;
-import backtype.storm.tuple.Fields;
 import com.biggis.storm.bolt.CounterBolt;
 import com.biggis.storm.bolt.RankerBolt;
 import com.biggis.storm.bolt.SplitterBolt;
 import com.biggis.storm.spout.DataSourceSpout;
+import org.apache.storm.Config;
+import org.apache.storm.LocalCluster;
+import org.apache.storm.StormSubmitter;
+import org.apache.storm.generated.StormTopology;
+import org.apache.storm.kafka.*;
+import org.apache.storm.spout.SchemeAsMultiScheme;
+import org.apache.storm.topology.TopologyBuilder;
+import org.apache.storm.tuple.Fields;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import storm.kafka.*;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * WordCountTopology
- *
+ * <p>
  * The Storm topology "wires" the various computation steps
  * done in the Spout and Bolts together to a DAG via defined
  * stream groupings (shuffle grouping, field grouping, global
@@ -46,7 +48,7 @@ public class WordCountTopology {
     /**
      * WordCountTopology with Kafka
      *
-     * @return      StormTopology Object
+     * @return StormTopology Object
      */
     public StormTopology buildTopology(String TOPIC) {
 
@@ -67,7 +69,7 @@ public class WordCountTopology {
     /**
      * WordCountTopology without Kafka
      *
-     * @return      StormTopology Object
+     * @return StormTopology Object
      */
     public StormTopology buildTopology() {
 
@@ -92,10 +94,10 @@ public class WordCountTopology {
             /**
              * Remote deployment as part of Docker Compose multi-application setup
              *
-             * @TOPOLOGY_NAME:       Name of Storm topology
-             * @ZK_HOST:             Host IP address of ZooKeeper
-             * @ZK_PORT:             Port of ZooKeeper
-             * @TOPIC:               Kafka Topic which this Storm topology is consuming from
+             * @TOPOLOGY_NAME: Name of Storm topology
+             * @ZK_HOST: Host IP address of ZooKeeper
+             * @ZK_PORT: Port of ZooKeeper
+             * @TOPIC: Kafka Topic which this Storm topology is consuming from
              */
             LOG.info("Submitting topology " + TOPOLOGY_NAME + " to remote cluster.");
             String ZK_HOST = args[1];
@@ -107,7 +109,13 @@ public class WordCountTopology {
             conf.setDebug(false);
             conf.setNumWorkers(2);
             conf.setMaxTaskParallelism(5);
-            conf.put(Config.NIMBUS_HOST, NIMBUS_HOST);
+
+            List<String> nimbus_seeds = new ArrayList<String>();
+            // nimbus url
+            nimbus_seeds.add(NIMBUS_HOST);
+            // NIMBUS_HOST is deprecated
+            // conf.put(Config.NIMBUS_HOST, NIMBUS_HOST);
+            conf.put(Config.NIMBUS_SEEDS, nimbus_seeds);
             conf.put(Config.NIMBUS_THRIFT_PORT, NIMBUS_THRIFT_PORT);
             conf.put(Config.STORM_ZOOKEEPER_PORT, ZK_PORT);
             conf.put(Config.STORM_ZOOKEEPER_SERVERS, Arrays.asList(ZK_HOST));
@@ -115,8 +123,7 @@ public class WordCountTopology {
             WordCountTopology wordCountTopology = new WordCountTopology(ZK_HOST, String.valueOf(ZK_PORT));
             StormSubmitter.submitTopology(TOPOLOGY_NAME, conf, wordCountTopology.buildTopology(TOPIC));
 
-        }
-        else {
+        } else {
             TOPOLOGY_NAME = "wordcount-topology";
             /**
              * Local mode (only for testing purposes)
