@@ -1,7 +1,7 @@
 # 基于 Apache Kafka, Apache Storm,  使用流处理和分析数据
 
-#### 这里是参照  [wipatrick/docker-kafka-storm](https://github.com/wipatrick/docker-kafka-storm) 的github修改, 由于该项目太旧了,我加以改造了一下
-#### 下面的文档是原文,我认为该Up主写得不错,我就解析做法了,至于文档是英文,就各种翻译工具吧!
+#### 这里是Fork  [wipatrick/docker-kafka-storm](https://github.com/wipatrick/docker-kafka-storm) 的github修改, 由于该项目太旧了,我加以改造了一下
+#### 下面的文档是原文,我认为该Up主写得不错,我就不解析做法了,至于文档是英文,就各种翻译工具吧!
 
 ------
 
